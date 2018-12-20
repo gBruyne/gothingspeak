@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 const (
@@ -62,8 +63,8 @@ func (w *ChannelWriter) AddField(n int, value string) bool {
 func (w *ChannelWriter) Update() (resp *http.Response, err error) {
 	w.buildUrl()
 	log.Printf("URL: %s\n", w.url)
-
-	client := &http.Client{}
+	timeout := time.Duration(5 * time.Second)
+	client := &http.Client{Timeout: timeout,}
 	r, err := http.NewRequest("POST", w.url, nil)
 	if err != nil {
 		return nil, err
